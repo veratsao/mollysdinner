@@ -21,8 +21,8 @@ main{max-width:1440px;margin:20px auto;padding:0 16px}
 .today-bar .stat-item{background:rgba(255,255,255,0.1);padding:4px 12px;border-radius:6px}
 
 /* 分頁 Tab */
-.tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:2px solid var(--line);padding-bottom:0}
-.tab-btn{padding:10px 20px;border:0;background:transparent;font-weight:700;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0;font-size:15px}
+.tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:2px solid var(--line);padding-bottom:0;overflow-x:auto}
+.tab-btn{padding:10px 20px;border:0;background:transparent;font-weight:700;color:#64748b;cursor:pointer;border-bottom:3px solid transparent;border-radius:6px 6px 0 0;font-size:15px;white-space:nowrap}
 .tab-btn.active{background:#fff;color:var(--blue);border-bottom-color:var(--blue);box-shadow:0 -2px 6px rgba(0,0,0,0.03)}
 .tab-content{display:none}
 .tab-content.active{display:block}
@@ -39,7 +39,20 @@ button:hover{filter:brightness(.95)}
 .stats{display:grid;grid-template-columns:repeat(2,minmax(140px,1fr));gap:12px;margin-bottom:16px}
 .stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px}
 .stat small{color:#64748b}.stat strong{display:block;font-size:22px;margin-top:2px}
+
+/* 學生卡片區域與動態切換排版 CSS */
 .students{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+/* 當選取單欄模式時套用此 CSS */
+.students.single-column{grid-template-columns:1fr !important;}
+
+/* 手機自動排版適應 */
+@media(max-width:768px){
+  .students{grid-template-columns:1fr !important;}
+  .toolbar{flex-direction:column;align-items:stretch;}
+  .footer-actions{margin-left:0 !important;flex-direction:column;}
+  .today-bar{flex-direction:column;align-items:flex-start;}
+}
+
 .student{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative}
 .student.selected-card{border:2px solid var(--blue)}
 .studenthead{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--line);gap:8px}
@@ -135,9 +148,15 @@ button:hover{filter:brightness(.95)}
 </style>
 </head>
 <body>
-<header>
-  <h1>學生每月出席與餐費管理系統</h1>
-  <div class="sub">提供批量訂/取消餐、餐標設定、跨月溢繳與已繳費異動備註自動印單。</div>
+<header style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+  <div>
+    <h1>學生每月出席與餐費管理系統</h1>
+    <div class="sub">提供批量訂/取消餐、餐標設定、跨月溢繳與已繳費異動備註自動印單。</div>
+  </div>
+  <!-- 切換排版按鈕 -->
+  <div>
+    <button id="toggleLayoutBtn" class="secondary" style="border: 1.5px solid #315d91; font-size:14px; padding: 8px 14px;">📱/💻 切換排版 (兩欄 / 單欄)</button>
+  </div>
 </header>
 <main>
   <!-- 首頁最上方：當日訂餐統計 -->
@@ -311,6 +330,7 @@ let batchSelectedStudentIds = new Set(); // 第二頁面（批量訂餐）專用
 let batchSelectedDates = new Set();
 
 let tagSearchKeyword = ""; // 搜尋關鍵字記錄
+let isSingleColumn = false; // 排版模式記錄（單欄 / 雙欄）
 
 const $ = id => document.getElementById(id);
 const today = new Date();
@@ -342,12 +362,35 @@ if(localStorage.getItem("gas_app_url")){
   $("gasUrl").value = localStorage.getItem("gas_app_url");
 }
 
+// 載入排版偏好
+if(localStorage.getItem("layout_mode") === "single"){
+  isSingleColumn = true;
+}
+
 function save(){
   localStorage.setItem(STORAGE, JSON.stringify(data));
   if($("gasUrl").value.trim()){
     localStorage.setItem("gas_app_url", $("gasUrl").value.trim());
   }
 }
+
+function updateLayoutUI(){
+  const studentListEl = $("studentList");
+  const toggleBtn = $("toggleLayoutBtn");
+  if(isSingleColumn){
+    studentListEl.classList.add("single-column");
+    toggleBtn.textContent = "📱 目前排版：單欄模式 (適合手機)";
+  } else {
+    studentListEl.classList.remove("single-column");
+    toggleBtn.textContent = "💻 目前排版：兩欄模式 (適合電腦)";
+  }
+}
+
+$("toggleLayoutBtn").addEventListener("click", () => {
+  isSingleColumn = !isSingleColumn;
+  localStorage.setItem("layout_mode", isSingleColumn ? "single" : "double");
+  updateLayoutUI();
+});
 
 function getYM(y, m){ return `${y}-${String(m).padStart(2, "0")}`; }
 function currentYM(){ return getYM($("year").value, $("month").value); }
@@ -535,6 +578,7 @@ function renderQuickTagBar(){
 function render(){
   renderTodayBar();
   renderQuickTagBar();
+  updateLayoutUI();
 
   const list = $("studentList");
   list.innerHTML = "";
