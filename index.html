@@ -42,10 +42,8 @@ button:hover{filter:brightness(.95)}
 
 /* 學生卡片區域與動態切換排版 CSS */
 .students{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-/* 當選取單欄模式時套用此 CSS */
 .students.single-column{grid-template-columns:1fr !important;}
 
-/* 手機自動排版適應 */
 @media(max-width:768px){
   .students{grid-template-columns:1fr !important;}
   .toolbar{flex-direction:column;align-items:stretch;}
@@ -75,12 +73,14 @@ button:hover{filter:brightness(.95)}
 .sumitem small{display:block;color:#64748b;font-size:11px}.sumitem b{font-size:14px}
 .pay-input-group{margin-top:10px;padding:8px;background:#f8fafc;border-radius:6px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px}
 .pay-input-group input{width:100px;padding:4px 6px}
-.note-box{margin-top:8px;padding:8px;background:#fff8e1;border:1px solid #ffe082;border-radius:6px;font-size:12px;color:#795548}
+.remark-input-group{margin-top:8px;padding:8px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;display:flex;gap:8px;align-items:center;font-size:13px}
+.remark-input-group label{color:#b45309;font-weight:bold;white-space:nowrap;}
+.remark-input-group input{flex:1;padding:4px 8px;border:1px solid #fcd34d;}
+
 .empty{padding:30px;text-align:center;color:#64748b;background:#fff;border:1px dashed #cbd5e1;border-radius:12px}
 .cloud-box{background:#f0f7ff;border:1px solid #bce0fd;border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .cloud-box input{flex:1;min-width:240px}
 
-/* 第一分頁學生膠囊按鈕快速過濾列樣式 */
 .quick-tag-bar {
   display: flex;
   flex-wrap: wrap;
@@ -108,32 +108,16 @@ button:hover{filter:brightness(.95)}
   user-select: none;
   transition: all 0.2s;
 }
-.student-tag:hover {
-  background: #f1f5f9;
-}
-.student-tag.active {
-  background: #243247;
-  color: #fff;
-  border-color: #243247;
-}
-.student-tag.unpaid {
-  border-color: #fca5a5;
-  background: #fef2f2;
-  color: #991b1b;
-}
-.student-tag.unpaid.active {
-  background: #991b1b;
-  color: #fff;
-  border-color: #991b1b;
-}
+.student-tag:hover { background: #f1f5f9; }
+.student-tag.active { background: #243247; color: #fff; border-color: #243247; }
+.student-tag.unpaid { border-color: #fca5a5; background: #fef2f2; color: #991b1b; }
+.student-tag.unpaid.active { background: #991b1b; color: #fff; border-color: #991b1b; }
 
-/* 批量分頁專屬樣式 */
 .batch-section{display:grid;grid-template-columns:320px 1fr;gap:16px}
 @media(max-width:900px){.batch-section{grid-template-columns:1fr}}
 .batch-student-list{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;max-height:600px;overflow-y:auto}
 .batch-student-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-bottom:1px solid #f1f5f9}
 
-/* 批量日期按星期排列 (一星期一排) */
 .batch-calendar-container{overflow-x:auto;margin-top:10px;}
 .batch-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(45px,1fr));gap:6px;min-width:350px;}
 .batch-whead{text-align:center;font-size:12px;font-weight:bold;color:#475569;padding:4px 0;background:#f1f5f9;border-radius:4px;}
@@ -143,7 +127,6 @@ button:hover{filter:brightness(.95)}
 .batch-date-item.weekend{background:#f8fafc;color:#94a3b8;}
 .batch-date-item.empty{border:none;background:transparent;cursor:default;}
 
-/* 隱藏列印元件 */
 @media print { body * { display: none !important; } }
 </style>
 </head>
@@ -151,26 +134,21 @@ button:hover{filter:brightness(.95)}
 <header style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
   <div>
     <h1>學生每月出席與餐費管理系統</h1>
-    <div class="sub">提供批量訂/取消餐、餐標設定、跨月溢繳與已繳費異動備註自動印單。</div>
+    <div class="sub">提供批量訂/取消餐、餐標設定、跨月溢繳與繳費單列印。</div>
   </div>
-  <!-- 切換排版按鈕 -->
   <div>
     <button id="toggleLayoutBtn" class="secondary" style="border: 1.5px solid #315d91; font-size:14px; padding: 8px 14px;">📱/💻 切換排版 (兩欄 / 單欄)</button>
   </div>
 </header>
 <main>
-  <!-- 首頁最上方：當日訂餐統計 -->
   <div class="today-bar" id="todayBar">
     <div class="title">
       <span>🍱 當日訂餐概況</span>
       <span class="badge" id="todayDateStr">2026/10/30</span>
     </div>
-    <div class="stats-group" id="todayStatsGroup">
-      <!-- 自動渲染當日金額與人數 -->
-    </div>
+    <div class="stats-group" id="todayStatsGroup"></div>
   </div>
 
-  <!-- 雲端備份與設定 -->
   <div class="cloud-box">
     <label for="gasUrl"><strong>☁️ Apps Script 雲端 URL：</strong></label>
     <input id="gasUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec">
@@ -178,7 +156,6 @@ button:hover{filter:brightness(.95)}
     <button class="secondary" id="loadCloudBtn">🔄 從雲端載入資料</button>
   </div>
 
-  <!-- 功能分頁頁籤 -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('mainTab')">📋 個別月曆與繳費管理</button>
     <button class="tab-btn" onclick="switchTab('batchTab')">⚡ 批量訂餐 / 取消功能</button>
@@ -186,7 +163,6 @@ button:hover{filter:brightness(.95)}
     <button class="tab-btn" onclick="switchTab('addStudentTab')">➕ 批量新增學生與備註</button>
   </div>
 
-  <!-- 全局月份選取工具欄 -->
   <section class="toolbar">
     <div class="field"><label for="year">西元年</label><input id="year" type="number" min="1900" max="2200" value="2026" style="width:100px"></div>
     <div class="field"><label for="month">月份</label><select id="month"></select></div>
@@ -198,22 +174,17 @@ button:hover{filter:brightness(.95)}
     </div>
   </section>
 
-  <!-- TAB 1: 主頁面 (個別月曆) -->
   <div id="mainTab" class="tab-content active">
-    <!-- 學生膠囊按鈕快速過濾列與即時搜尋 -->
     <div class="quick-tag-bar" id="quickTagBar">
       <strong style="font-size:13px; color:#1e293b; margin-right:4px;">🔍 快速查核學生：</strong>
       <input type="text" id="tagSearchInput" placeholder="搜尋姓名..." style="width:130px; padding:4px 8px; font-size:12px; margin-right:8px;">
-      <!-- 動態渲染學生膠囊按鈕 -->
     </div>
 
-    <!-- 統計 -->
     <section class="stats">
       <div class="stat"><small>學生總人數</small><strong id="studentCount">0 人</strong></div>
       <div class="stat"><small>本月預計應收總額 (不含跨月抵扣)</small><strong id="grandTotal">$0</strong></div>
     </section>
 
-    <!-- 學生篩選控制條 -->
     <section class="toolbar" style="background:#f8fafc;">
       <label><input type="checkbox" id="selectAll"> <strong>全選 / 全不選</strong></label>
       <span style="color:#64748b; font-size:13px;" id="selectedCountInfo">已選擇 0 位學生</span>
@@ -224,10 +195,8 @@ button:hover{filter:brightness(.95)}
     <div id="empty" class="empty" hidden>目前沒有符合條件的學生資料。</div>
   </div>
 
-  <!-- TAB 2: 批量訂與取消功能 -->
   <div id="batchTab" class="tab-content">
     <div class="batch-section">
-      <!-- 左側：學生選擇區 -->
       <div class="batch-student-list">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #eee;">
           <strong>1. 選擇學生</strong>
@@ -237,7 +206,6 @@ button:hover{filter:brightness(.95)}
         <div id="batchStudentsContainer"></div>
       </div>
 
-      <!-- 右側：餐標與日期批次設定區 -->
       <div>
         <div class="panel">
           <label style="font-size:14px; color:#1e293b;"><strong>2. 餐標設定區</strong>（設定批量操作的餐費標準）</label>
@@ -261,13 +229,11 @@ button:hover{filter:brightness(.95)}
               <button class="secondary" style="padding:4px 8px; font-size:12px;" id="btnClearDays">清除全選</button>
             </div>
           </div>
-          <!-- 週曆化排版區域 -->
           <div class="batch-calendar-container">
             <div id="batchDateGrid" class="batch-calendar-grid"></div>
           </div>
         </div>
 
-        <!-- 執行按鈕 -->
         <div class="panel" style="display:flex; gap:12px; justify-content:flex-end;">
           <button class="danger" id="btnBatchCancel" style="font-size:15px; padding:10px 20px;">❌ 批量取消訂餐</button>
           <button class="success" id="btnBatchOrder" style="font-size:15px; padding:10px 20px;">✅ 批量完成訂餐</button>
@@ -276,18 +242,14 @@ button:hover{filter:brightness(.95)}
     </div>
   </div>
 
-  <!-- TAB 3: 月度總覽與統計 -->
   <div id="reportTab" class="tab-content">
     <div class="panel">
       <h3>📊 月度學生餐費統計總表</h3>
       <p style="color:#64748b; font-size:13px;">提供全班或特定班級月度訂餐次數、金額小計與應繳總額匯總概覽。</p>
-      <div id="reportSummaryContainer" style="margin-top:16px; overflow-x:auto;">
-        <!-- 自動渲染表格統計 -->
-      </div>
+      <div id="reportSummaryContainer" style="margin-top:16px; overflow-x:auto;"></div>
     </div>
   </div>
 
-  <!-- TAB 4: 批量新增學生與備註 -->
   <div id="addStudentTab" class="tab-content">
     <div class="panel">
       <h3>➕ 批量新增學生與備註管理</h3>
@@ -309,12 +271,9 @@ button:hover{filter:brightness(.95)}
       </div>
     </div>
 
-    <!-- 學生備註檢視與維護清單 -->
     <div class="panel">
       <h3>📝 目前學生名冊與備註維護</h3>
-      <div id="studentRemarksListContainer" style="margin-top:12px; overflow-x:auto;">
-        <!-- 動態渲染學生名冊與備註輸入框 -->
-      </div>
+      <div id="studentRemarksListContainer" style="margin-top:12px; overflow-x:auto;"></div>
     </div>
   </div>
 </main>
@@ -324,13 +283,13 @@ const rates = [70, 75, 105];
 const weekdays = ["一","二","三","四","五","六","日"];
 const STORAGE = "student-attendance-fees-v3";
 
-let data = { students: [], records: {}, payments: {}, adjustments: {} };
-let selectedStudentIds = new Set(); // 第一頁面專用勾選狀態
-let batchSelectedStudentIds = new Set(); // 第二頁面（批量訂餐）專用勾選狀態
+let data = { students: [], records: {}, payments: {} };
+let selectedStudentIds = new Set();
+let batchSelectedStudentIds = new Set();
 let batchSelectedDates = new Set();
 
-let tagSearchKeyword = ""; // 搜尋關鍵字記錄
-let isSingleColumn = false; // 排版模式記錄（單欄 / 雙欄）
+let tagSearchKeyword = "";
+let isSingleColumn = false;
 
 const $ = id => document.getElementById(id);
 const today = new Date();
@@ -344,7 +303,6 @@ for(let m=1; m<=12; m++){
 }
 $("month").value = today.getMonth() + 1;
 
-// 初始化載入
 try {
   const saved = JSON.parse(localStorage.getItem(STORAGE));
   if(saved && Array.isArray(saved.students)) {
@@ -354,7 +312,6 @@ try {
       if(!st.remark) st.remark = ""; 
     });
     if(!data.payments) data.payments = {};
-    if(!data.adjustments) data.adjustments = {};
   }
 } catch(e){}
 
@@ -362,7 +319,6 @@ if(localStorage.getItem("gas_app_url")){
   $("gasUrl").value = localStorage.getItem("gas_app_url");
 }
 
-// 載入排版偏好
 if(localStorage.getItem("layout_mode") === "single"){
   isSingleColumn = true;
 }
@@ -423,34 +379,10 @@ function getRate(ymStr, sid, day){
 }
 
 function setRate(ymStr, sid, day, newRate){
-  const oldRate = getRate(ymStr, sid, day);
-  if(oldRate === newRate) return;
-
   const k = `${ymStr}|${sid}|${day}`;
   if(newRate) data.records[k] = newRate;
   else delete data.records[k];
-
-  // 僅針對「取消訂餐」進行記錄，格式為：m/d(金額元)
-  if(oldRate > 0 && newRate === 0){
-    const [y, m] = ymStr.split("-").map(Number);
-    let nextY = y, nextM = m + 1;
-    if(nextM > 12){ nextM = 1; nextY++; }
-    const nextYM = getYM(nextY, nextM);
-
-    if(!data.adjustments[`${nextYM}|${sid}`]) data.adjustments[`${nextYM}|${sid}`] = [];
-    data.adjustments[`${nextYM}|${sid}`].push({ m, day, amount: oldRate });
-  }
-
   save();
-}
-
-// 格式化取得取消異動字串：取消：7/12(70元)、7/25(105元)
-function getFormattedCancelNote(ymStr, sid){
-  const rawList = data.adjustments[`${ymStr}|${sid}`] || [];
-  if(rawList.length === 0) return "";
-  
-  const items = rawList.map(item => `${item.m}/${item.day}(${item.amount}元)`).join("、");
-  return `取消：${items}`;
 }
 
 function calcMonthFee(ymStr, sid){
@@ -469,7 +401,6 @@ function calcMonthFee(ymStr, sid){
   return { counts, total, daysCount };
 }
 
-// 精確計算跨月結轉累計餘額 (已繳金額減去應收金額的累計)
 function calcStudentBalanceUpTo(targetY, targetM, sid){
   let startY = 2024, startM = 1;
   let runningBalance = 0;
@@ -523,7 +454,6 @@ function renderTodayBar(){
   `;
 }
 
-// 渲染第一分頁上方的學生快速過濾標籤列與即時搜尋
 function renderQuickTagBar(){
   const bar = $("quickTagBar");
   
@@ -610,8 +540,7 @@ function render(){
     
     let finalPay = Math.max(0, sStats.total - overPaid + underPaid);
     const payKey = `${cYM}|${st.id}`;
-    const payData = data.payments[payKey] || { paid: "", note: "" };
-    const cancelNoteText = getFormattedCancelNote(cYM, st.id);
+    const payData = data.payments[payKey] || { paid: "" };
 
     const card = document.createElement("article");
     card.className = "student selected-card";
@@ -658,7 +587,6 @@ function render(){
     const body = document.createElement("div");
     body.className = "studentbody";
 
-    // 日曆
     const cal = document.createElement("div");
     cal.className = "calendar";
     weekdays.forEach(w => {
@@ -702,7 +630,6 @@ function render(){
     }
     body.appendChild(cal);
 
-    // 統計
     const sum = document.createElement("div");
     sum.className = "summary";
     sum.innerHTML = `
@@ -713,7 +640,6 @@ function render(){
     `;
     body.appendChild(sum);
 
-    // 繳費區域
     const payGroup = document.createElement("div");
     payGroup.className = "pay-input-group";
     payGroup.innerHTML = `
@@ -734,13 +660,18 @@ function render(){
     });
     body.appendChild(payGroup);
 
-    // 卡片下方呈現「取消：7/12(70元)、7/25(105元)」
-    if(cancelNoteText){
-      const noteBox = document.createElement("div");
-      noteBox.className = "note-box";
-      noteBox.innerHTML = `📌 <strong>上月繳費後異動備註：</strong> ${esc(cancelNoteText)}`;
-      body.appendChild(noteBox);
-    }
+    const remarkGroup = document.createElement("div");
+    remarkGroup.className = "remark-input-group";
+    remarkGroup.innerHTML = `
+      <label>📝 飲食/訂餐備註：</label>
+      <input type="text" class="remark-in" value="${esc(st.remark||"")}" placeholder="自訂備註（如：素食、少飯...）">
+    `;
+
+    remarkGroup.querySelector('.remark-in').addEventListener('change', (e) => {
+      st.remark = e.target.value.trim();
+      save(); render();
+    });
+    body.appendChild(remarkGroup);
 
     card.appendChild(body);
     list.appendChild(card);
@@ -753,7 +684,6 @@ function render(){
   $("selectedCountInfo").textContent = `已選擇 ${selectedStudentIds.size} / ${data.students.length} 位學生`;
 }
 
-// 批量訂餐/取消分頁邏輯 (獨立勾選變數 batchSelectedStudentIds)
 function renderBatchTab(){
   const cYM = currentYM();
   const container = $("batchStudentsContainer");
@@ -803,7 +733,6 @@ function renderBatchTab(){
 
   $("batchSelectAllStudents").checked = batchSelectedStudentIds.size === data.students.length && data.students.length > 0;
 
-  // 渲染按「一星期一排」排列的日期週曆
   const cY = Number($("year").value);
   const cM = Number($("month").value);
   const totalDays = monthDays(cY, cM);
@@ -844,7 +773,6 @@ function renderBatchTab(){
   }
 }
 
-// 渲染第 3 個分頁 (月度總覽)
 function renderReportTab(){
   const cYM = currentYM();
   const cY = Number($("year").value);
@@ -895,7 +823,6 @@ function renderReportTab(){
   $("reportSummaryContainer").innerHTML = html;
 }
 
-// 渲染第 4 個分頁：學生備註名冊清單
 function renderStudentRemarksList(){
   let html = `
     <table style="width:100%; border-collapse:collapse; font-size:14px;">
@@ -957,7 +884,6 @@ function deleteStudentInTab4(sid){
   }
 }
 
-// 第 4 分頁批量新增學生帶備註邏輯
 $("addBatchBtnTab4").addEventListener("click", () => {
   const raw = $("batchNamesTab4").value.trim();
   const defaultClass = $("defaultClassNameTab4").value.trim() || "5B";
@@ -1008,7 +934,6 @@ $("addBatchBtnTab4").addEventListener("click", () => {
   alert(`成功新增 ${addedCount} 位學生（班級：${defaultClass}）！`);
 });
 
-// 第二分頁專屬的全選/全不選
 $("batchSelectAllStudents").addEventListener("change", (e) => {
   if(e.target.checked) {
     data.students.forEach(s => batchSelectedStudentIds.add(s.id));
@@ -1054,7 +979,6 @@ function getSelectedBatchRate(){
   return Number(checkedRadio.value);
 }
 
-// 批量訂餐執行
 $("btnBatchOrder").addEventListener("click", () => {
   if(batchSelectedStudentIds.size === 0){ alert("請先在左側勾選要設定的學生！"); return; }
   if(batchSelectedDates.size === 0){ alert("請選擇至少一個日期！"); return; }
@@ -1075,7 +999,6 @@ $("btnBatchOrder").addEventListener("click", () => {
   renderBatchTab();
 });
 
-// 批量取消執行
 $("btnBatchCancel").addEventListener("click", () => {
   if(batchSelectedStudentIds.size === 0){ alert("請先在左側勾選要取消的學生！"); return; }
   if(batchSelectedDates.size === 0){ alert("請選擇至少一個日期！"); return; }
@@ -1110,7 +1033,7 @@ $("applyMonth").addEventListener("click", () => {
 $("exportBtn").addEventListener("click", () => {
   let cYM = currentYM();
   let cY = Number($("year").value), cM = Number($("month").value);
-  let rows = [["月份","班級","學生姓名","學生備註","70元天數","75元天數","105元天數","餐費小計","歷史溢繳/補繳","本月應繳金額","本月已繳金額","取消異動備註"]];
+  let rows = [["月份","班級","學生姓名","學生備註","70元天數","75元天數","105元天數","餐費小計","歷史溢繳/補繳","本月應繳金額","本月已繳金額"]];
   
   data.students.forEach(st => {
     if(!selectedStudentIds.has(st.id)) return;
@@ -1118,8 +1041,7 @@ $("exportBtn").addEventListener("click", () => {
     let prev = calcStudentBalanceUpTo(cY, cM, st.id);
     let finalPay = Math.max(0, s.total - prev);
     let paid = (data.payments[`${cYM}|${st.id}`] || {}).paid || 0;
-    let cancelNote = getFormattedCancelNote(cYM, st.id);
-    rows.push([cYM, st.className||"5B", st.name, st.remark||"", s.counts[70]||0, s.counts[75]||0, s.counts[105]||0, s.total, prev, finalPay, paid, cancelNote]);
+    rows.push([cYM, st.className||"5B", st.name, st.remark||"", s.counts[70]||0, s.counts[75]||0, s.counts[105]||0, s.total, prev, finalPay, paid]);
   });
 
   let csv = "\uFEFF" + rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(",")).join("\r\n");
@@ -1151,9 +1073,6 @@ $("loadCloudBtn").addEventListener("click", async () => {
   } catch(err) { alert("載入失敗：" + err.message); }
 });
 
-// ==========================================
-// 直式 A4 精確 10 位 (2×5) 列印繳費單邏輯
-// ==========================================
 $("printBatchBtn").addEventListener("click", () => {
   const targetIds = Array.from(selectedStudentIds);
   if(targetIds.length === 0){ alert("請先勾選至少一位學生！"); return; }
@@ -1189,9 +1108,7 @@ function printSlips(studentIds){
       if(overPaid > 0) balText = `溢繳抵扣 -$${overPaid}`;
       else if(underPaid > 0) balText = `補繳 +$${underPaid}`;
 
-      const cancelNoteText = getFormattedCancelNote(cYM, sid);
-      let noteTextHtml = cancelNoteText ? `<div class="slip-row note">${esc(cancelNoteText)}</div>` : '';
-      let stRemarkHtml = st.remark ? `<div class="slip-row note" style="color:#2563eb;">飲食: ${esc(st.remark)}</div>` : '';
+      let stRemarkHtml = st.remark ? `<div class="slip-row note" style="color:#2563eb;">備註: ${esc(st.remark)}</div>` : '';
 
       let calCellsHtml = '';
       ["一","二","三","四","五","六","日"].forEach(w => { calCellsHtml += `<div class="p-whead">${w}</div>`; });
@@ -1227,7 +1144,6 @@ function printSlips(studentIds){
             <div class="slip-row">105元 × <b>${sStats.counts[105]||0}</b>天 ($${(sStats.counts[105]||0)*105})</div>
             <div class="slip-row">前期結轉：<b>${balText}</b></div>
             ${stRemarkHtml}
-            ${noteTextHtml}
             <div class="slip-row total">應繳金額：<b>$${finalTotal}</b></div>
           </div>
           <div class="slip-right">
@@ -1283,7 +1199,7 @@ function printSlips(studentIds){
     }
     .slip-row.name { font-size: 11px; font-weight: bold; border-bottom: 1px solid #000; padding-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .slip-row.title { font-size: 10.5px; font-weight: bold; color: #333; }
-    .slip-row.note { color: #d97706; font-size: 8px; word-break: break-all; }
+    .slip-row.note { color: #d97706; font-size: 8px; word-break: break-all; font-weight: bold; }
     
     .slip-row.total { 
       font-size: 11px; 
@@ -1316,6 +1232,7 @@ function printSlips(studentIds){
     .p-norate { border: none; background: transparent; }
     
     .p-ordered { 
+      print-color-adjust: exact;
       border: 1px solid #000; 
       background: #fff; 
       color: #000; 
