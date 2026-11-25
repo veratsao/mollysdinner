@@ -15,8 +15,11 @@ main{max-width:1440px;margin:20px auto;padding:0 16px}
 
 /* 當日訂餐摘要欄 */
 .today-bar{background:#243247;color:#fff;padding:12px 20px;border-radius:10px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 4px 10px rgba(0,0,0,0.1)}
-.today-bar .title{font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px}
-.today-bar .badge{background:#fff;color:#243247;padding:2px 8px;border-radius:12px;font-size:12px;font-weight:bold}
+.today-bar .title{font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.today-bar .date-picker-wrap{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.today-bar .date-picker-wrap input[type="date"]{padding:3px 8px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;color:#243247;font-size:13px;font-weight:700}
+.today-bar .date-quick-btn{padding:3px 8px;border-radius:6px;border:0;background:rgba(255,255,255,0.18);color:#fff;font-size:12px;font-weight:700;cursor:pointer}
+.today-bar .date-quick-btn:hover{background:rgba(255,255,255,0.3)}
 .today-bar .stats-group{display:flex;gap:16px;font-size:14px;flex-wrap:wrap}
 .today-bar .stat-item{background:rgba(255,255,255,0.1);padding:4px 12px;border-radius:6px}
 
@@ -39,24 +42,14 @@ button:hover{filter:brightness(.95)}
 .stats{display:grid;grid-template-columns:repeat(2,minmax(140px,1fr));gap:12px;margin-bottom:16px}
 .stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px}
 .stat small{color:#64748b}.stat strong{display:block;font-size:22px;margin-top:2px}
-
-/* 學生卡片區域與動態切換排版 CSS */
 .students{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.students.single-column{grid-template-columns:1fr !important;}
-
-@media(max-width:768px){
-  .students{grid-template-columns:1fr !important;}
-  .toolbar{flex-direction:column;align-items:stretch;}
-  .footer-actions{margin-left:0 !important;flex-direction:column;}
-  .today-bar{flex-direction:column;align-items:flex-start;}
-}
-
+@media(max-width:768px){.students{grid-template-columns:1fr}}
 .student{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;position:relative}
 .student.selected-card{border:2px solid var(--blue)}
 .studenthead{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--line);gap:8px}
-.studenthead .left{display:flex;align-items:center;gap:6px;width:75%}
+.studenthead .left{display:flex;align-items:center;gap:6px;width:78%;flex-wrap:wrap}
 .studenthead .class-input{font-size:14px;font-weight:700;width:60px;text-align:center;padding:4px;}
-.studenthead .name-input{font-size:16px;font-weight:700;flex:1;padding:4px 6px;}
+.studenthead .name-input{font-size:16px;font-weight:700;flex:1;padding:4px 6px;min-width:80px;}
 .studentbody{padding:12px}
 .calendar{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
 .weekday{text-align:center;font-size:12px;color:#64748b;padding:2px 0;font-weight:700}
@@ -73,14 +66,13 @@ button:hover{filter:brightness(.95)}
 .sumitem small{display:block;color:#64748b;font-size:11px}.sumitem b{font-size:14px}
 .pay-input-group{margin-top:10px;padding:8px;background:#f8fafc;border-radius:6px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13px}
 .pay-input-group input{width:100px;padding:4px 6px}
-.remark-input-group{margin-top:8px;padding:8px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;display:flex;gap:8px;align-items:center;font-size:13px}
-.remark-input-group label{color:#b45309;font-weight:bold;white-space:nowrap;}
-.remark-input-group input{flex:1;padding:4px 8px;border:1px solid #fcd34d;}
-
+.remark-edit-row{margin-top:8px;padding:6px 8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;gap:8px;font-size:12px}
+.remark-edit-row input{flex:1;padding:4px 8px;font-size:12px;border-color:#cbd5e1;min-width:120px}
 .empty{padding:30px;text-align:center;color:#64748b;background:#fff;border:1px dashed #cbd5e1;border-radius:12px}
 .cloud-box{background:#f0f7ff;border:1px solid #bce0fd;border-radius:8px;padding:10px;margin-bottom:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.cloud-box input{flex:1;min-width:240px}
+.cloud-box input{flex:1;min-width:200px}
 
+/* 第一分頁學生膠囊按鈕快速過濾列樣式 */
 .quick-tag-bar {
   display: flex;
   flex-wrap: wrap;
@@ -113,11 +105,13 @@ button:hover{filter:brightness(.95)}
 .student-tag.unpaid { border-color: #fca5a5; background: #fef2f2; color: #991b1b; }
 .student-tag.unpaid.active { background: #991b1b; color: #fff; border-color: #991b1b; }
 
+/* 批量分頁專屬樣式 */
 .batch-section{display:grid;grid-template-columns:320px 1fr;gap:16px}
 @media(max-width:900px){.batch-section{grid-template-columns:1fr}}
 .batch-student-list{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;max-height:600px;overflow-y:auto}
 .batch-student-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-bottom:1px solid #f1f5f9}
 
+/* 批量日期按星期排列 (一星期一排) */
 .batch-calendar-container{overflow-x:auto;margin-top:10px;}
 .batch-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(45px,1fr));gap:6px;min-width:350px;}
 .batch-whead{text-align:center;font-size:12px;font-weight:bold;color:#475569;padding:4px 0;background:#f1f5f9;border-radius:4px;}
@@ -127,28 +121,114 @@ button:hover{filter:brightness(.95)}
 .batch-date-item.weekend{background:#f8fafc;color:#94a3b8;}
 .batch-date-item.empty{border:none;background:transparent;cursor:default;}
 
-@media print { body * { display: none !important; } }
+/* ========================================================
+   手機/電腦通用「原地備援列印區」樣式 (防手機彈窗阻擋)
+======================================================== */
+#mobileFallbackPrintArea { display: none; }
+
+@media print {
+  @page { size: A4 portrait; margin: 5mm 7mm; }
+  body { background: #fff !important; margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  header, main { display: none !important; }
+  #mobileFallbackPrintArea { display: block !important; width: 100% !important; }
+  
+  .page-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: repeat(5, 53.5mm) !important;
+    gap: 2.5mm 3.5mm !important;
+    width: 100% !important;
+    height: 278mm !important;
+    page-break-after: always;
+    overflow: hidden;
+  }
+  .slip {
+    border: 1.3px dashed #000 !important;
+    border-radius: 4px;
+    padding: 3px 4px;
+    display: flex !important;
+    gap: 4px;
+    height: 53.5mm !important;
+    overflow: hidden;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .slip-left {
+    width: 35% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #000;
+    padding-right: 3px;
+    font-size: 9px;
+    line-height: 1.15;
+    color: #000 !important;
+  }
+  .slip-row.name { font-size: 10.5px; font-weight: 900; border-bottom: 1.5px solid #000; padding-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #000 !important; }
+  .slip-row.title { font-size: 9.5px; font-weight: 900; color: #000 !important; }
+  .slip-row.note { color: #000 !important; font-weight: 800; font-size: 7.5px; word-break: break-all; }
+  
+  .slip-row.total { 
+    font-size: 10px; 
+    font-weight: 900; 
+    background: #f1f5f9 !important; 
+    padding: 2px 3px; 
+    border-radius: 3px; 
+    border: 1.5px solid #000 !important; 
+    color: #000 !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .slip-row.total b { font-size: 11.5px; font-weight: 900; color: #000 !important; }
+
+  .slip-right { width: 65% !important; display: flex; align-items: center; justify-content: center; }
+  .p-calendar { display: grid !important; grid-template-columns: repeat(7, 1fr) !important; gap: 1px !important; width: 100% !important; text-align: center; }
+  .p-whead { font-size: 10px; font-weight: 900; color: #000 !important; margin-bottom: 0.5px; }
+  
+  .p-day { 
+    height: 21.5px !important; 
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    line-height: 1;
+  }
+  .p-empty { background: transparent; }
+  .p-norate { border: none; background: transparent; }
+  
+  .p-ordered { 
+    border: 1.5px solid #000 !important; 
+    background: #fff !important; 
+    color: #000 !important; 
+  }
+  .p-dnum { font-size: 12.5px !important; font-weight: 900 !important; color: #000 !important; line-height: 1; }
+  .p-dfee { font-size: 10px !important; font-weight: 900 !important; color: #000 !important; line-height: 1; margin-top: 0.5px; }
+}
 </style>
 </head>
 <body>
-<header style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-  <div>
-    <h1>學生每月出席與餐費管理系統</h1>
-    <div class="sub">提供批量訂/取消餐、餐標設定、跨月溢繳與繳費單列印。</div>
-  </div>
-  <div>
-    <button id="toggleLayoutBtn" class="secondary" style="border: 1.5px solid #315d91; font-size:14px; padding: 8px 14px;">📱/💻 切換排版 (兩欄 / 單欄)</button>
-  </div>
+<header>
+  <h1>學生每月出席與餐費管理系統</h1>
+  <div class="sub">提供批量訂/取消餐、餐標設定、當月繳費與備註修改自動印單。</div>
 </header>
 <main>
+  <!-- 首頁最上方：每日訂餐統計（可調整日期） -->
   <div class="today-bar" id="todayBar">
     <div class="title">
-      <span>🍱 當日訂餐概況</span>
-      <span class="badge" id="todayDateStr">2026/10/30</span>
+      <span>🍱 每日訂餐概況</span>
+      <div class="date-picker-wrap">
+        <button type="button" class="date-quick-btn" id="prevSummaryDateBtn">◀ 前一天</button>
+        <input type="date" id="summaryDateInput">
+        <button type="button" class="date-quick-btn" id="nextSummaryDateBtn">後一天 ▶</button>
+        <button type="button" class="date-quick-btn" id="resetSummaryTodayBtn">今天</button>
+      </div>
     </div>
     <div class="stats-group" id="todayStatsGroup"></div>
   </div>
 
+  <!-- 雲端備份與設定 -->
   <div class="cloud-box">
     <label for="gasUrl"><strong>☁️ Apps Script 雲端 URL：</strong></label>
     <input id="gasUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec">
@@ -156,6 +236,7 @@ button:hover{filter:brightness(.95)}
     <button class="secondary" id="loadCloudBtn">🔄 從雲端載入資料</button>
   </div>
 
+  <!-- 功能分頁頁籤 -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('mainTab')">📋 個別月曆與繳費管理</button>
     <button class="tab-btn" onclick="switchTab('batchTab')">⚡ 批量訂餐 / 取消功能</button>
@@ -163,17 +244,19 @@ button:hover{filter:brightness(.95)}
     <button class="tab-btn" onclick="switchTab('addStudentTab')">➕ 批量新增學生與備註</button>
   </div>
 
+  <!-- 全局月份選取工具欄 -->
   <section class="toolbar">
     <div class="field"><label for="year">西元年</label><input id="year" type="number" min="1900" max="2200" value="2026" style="width:100px"></div>
     <div class="field"><label for="month">月份</label><select id="month"></select></div>
     <button class="primary" id="applyMonth">切換年月</button>
     
-    <div class="footer-actions" style="margin-left:auto; display:flex; gap:8px;">
+    <div class="footer-actions" style="margin-left:auto; display:flex; gap:8px; flex-wrap:wrap;">
       <button class="success" id="printBatchBtn">🖨️ 列印已選學生繳費單 (直式A4 10位/張)</button>
       <button class="secondary" id="exportBtn">匯出 CSV</button>
     </div>
   </section>
 
+  <!-- TAB 1: 主頁面 (個別月曆) -->
   <div id="mainTab" class="tab-content active">
     <div class="quick-tag-bar" id="quickTagBar">
       <strong style="font-size:13px; color:#1e293b; margin-right:4px;">🔍 快速查核學生：</strong>
@@ -182,7 +265,7 @@ button:hover{filter:brightness(.95)}
 
     <section class="stats">
       <div class="stat"><small>學生總人數</small><strong id="studentCount">0 人</strong></div>
-      <div class="stat"><small>本月預計應收總額 (不含跨月抵扣)</small><strong id="grandTotal">$0</strong></div>
+      <div class="stat"><small>本月預計應收總額</small><strong id="grandTotal">$0</strong></div>
     </section>
 
     <section class="toolbar" style="background:#f8fafc;">
@@ -195,6 +278,7 @@ button:hover{filter:brightness(.95)}
     <div id="empty" class="empty" hidden>目前沒有符合條件的學生資料。</div>
   </div>
 
+  <!-- TAB 2: 批量訂與取消功能 -->
   <div id="batchTab" class="tab-content">
     <div class="batch-section">
       <div class="batch-student-list">
@@ -242,6 +326,7 @@ button:hover{filter:brightness(.95)}
     </div>
   </div>
 
+  <!-- TAB 3: 月度總覽與統計 -->
   <div id="reportTab" class="tab-content">
     <div class="panel">
       <h3>📊 月度學生餐費統計總表</h3>
@@ -250,6 +335,7 @@ button:hover{filter:brightness(.95)}
     </div>
   </div>
 
+  <!-- TAB 4: 批量新增學生與備註 -->
   <div id="addStudentTab" class="tab-content">
     <div class="panel">
       <h3>➕ 批量新增學生與備註管理</h3>
@@ -263,7 +349,7 @@ button:hover{filter:brightness(.95)}
       </div>
 
       <div class="addrow" style="margin-top:8px;">
-        <textarea id="batchNamesTab4" rows="6" style="flex:1; min-width:300px;" placeholder="輸入範例：&#10;王小明 (素食)&#10;陳大天, 不吃牛肉&#10;林小美 / 海鮮過敏&#10;張海龍"></textarea>
+        <textarea id="batchNamesTab4" rows="6" style="width:100%;" placeholder="輸入範例：&#10;王小明 (素食)&#10;陳大天, 不吃牛肉&#10;林小美 / 海鮮過敏&#10;張海龍"></textarea>
       </div>
 
       <div style="margin-top:12px; display:flex; justify-content:flex-end;">
@@ -278,21 +364,31 @@ button:hover{filter:brightness(.95)}
   </div>
 </main>
 
+<!-- 手機防阻擋備援列印容器 -->
+<div id="mobileFallbackPrintArea"></div>
+
 <script>
 const rates = [70, 75, 105];
 const weekdays = ["一","二","三","四","五","六","日"];
 const STORAGE = "student-attendance-fees-v3";
 
-let data = { students: [], records: {}, payments: {} };
+let data = { students: [], records: {}, payments: {}, adjustments: {} };
 let selectedStudentIds = new Set();
 let batchSelectedStudentIds = new Set();
 let batchSelectedDates = new Set();
-
 let tagSearchKeyword = "";
-let isSingleColumn = false;
 
 const $ = id => document.getElementById(id);
 const today = new Date();
+
+function toDateInputValue(dObj){
+  const y = dObj.getFullYear();
+  const m = String(dObj.getMonth() + 1).padStart(2, "0");
+  const d = String(dObj.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+$("summaryDateInput").value = toDateInputValue(today);
 
 $("year").value = today.getFullYear();
 for(let m=1; m<=12; m++){
@@ -312,15 +408,12 @@ try {
       if(!st.remark) st.remark = ""; 
     });
     if(!data.payments) data.payments = {};
+    if(!data.adjustments) data.adjustments = {};
   }
 } catch(e){}
 
 if(localStorage.getItem("gas_app_url")){
   $("gasUrl").value = localStorage.getItem("gas_app_url");
-}
-
-if(localStorage.getItem("layout_mode") === "single"){
-  isSingleColumn = true;
 }
 
 function save(){
@@ -329,24 +422,6 @@ function save(){
     localStorage.setItem("gas_app_url", $("gasUrl").value.trim());
   }
 }
-
-function updateLayoutUI(){
-  const studentListEl = $("studentList");
-  const toggleBtn = $("toggleLayoutBtn");
-  if(isSingleColumn){
-    studentListEl.classList.add("single-column");
-    toggleBtn.textContent = "📱 目前排版：單欄模式 (適合手機)";
-  } else {
-    studentListEl.classList.remove("single-column");
-    toggleBtn.textContent = "💻 目前排版：兩欄模式 (適合電腦)";
-  }
-}
-
-$("toggleLayoutBtn").addEventListener("click", () => {
-  isSingleColumn = !isSingleColumn;
-  localStorage.setItem("layout_mode", isSingleColumn ? "single" : "double");
-  updateLayoutUI();
-});
 
 function getYM(y, m){ return `${y}-${String(m).padStart(2, "0")}`; }
 function currentYM(){ return getYM($("year").value, $("month").value); }
@@ -379,9 +454,13 @@ function getRate(ymStr, sid, day){
 }
 
 function setRate(ymStr, sid, day, newRate){
+  const oldRate = getRate(ymStr, sid, day);
+  if(oldRate === newRate) return;
+
   const k = `${ymStr}|${sid}|${day}`;
   if(newRate) data.records[k] = newRate;
   else delete data.records[k];
+
   save();
 }
 
@@ -401,41 +480,31 @@ function calcMonthFee(ymStr, sid){
   return { counts, total, daysCount };
 }
 
-function calcStudentBalanceUpTo(targetY, targetM, sid){
-  let startY = 2024, startM = 1;
-  let runningBalance = 0;
-
-  let curY = startY, curM = startM;
-  while(curY < targetY || (curY === targetY && curM < targetM)){
-    let ym = getYM(curY, curM);
-    let fee = calcMonthFee(ym, sid).total;
-    let payObj = data.payments[`${ym}|${sid}`] || { paid: 0 };
-    let paid = Number(payObj.paid) || 0;
-    if(payObj.paid !== "" && payObj.paid !== undefined){
-      runningBalance += (paid - fee);
-    }
-    curM++;
-    if(curM > 12){ curM = 1; curY++; }
-  }
-  return runningBalance;
-}
-
 function esc(s){ return String(s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])) }
 
 function renderTodayBar(){
-  const ty = today.getFullYear();
-  const tm = today.getMonth() + 1;
-  const td = today.getDate();
-  const todayYM = getYM(ty, tm);
+  const rawVal = $("summaryDateInput").value;
+  let targetDate = today;
+  if(rawVal){
+    const parts = rawVal.split("-").map(Number);
+    if(parts.length === 3 && !parts.some(isNaN)){
+      targetDate = new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+  } else {
+    $("summaryDateInput").value = toDateInputValue(today);
+  }
 
-  $("todayDateStr").textContent = `${ty}/${tm}/${td}`;
-  
+  const ty = targetDate.getFullYear();
+  const tm = targetDate.getMonth() + 1;
+  const td = targetDate.getDate();
+  const targetYM = getYM(ty, tm);
+
   let todayCounts = {};
   let todayTotalMoney = 0;
   let totalMeals = 0;
 
   data.students.forEach(st => {
-    let r = getRate(todayYM, st.id, td);
+    let r = getRate(targetYM, st.id, td);
     if(r > 0){
       todayCounts[r] = (todayCounts[r] || 0) + 1;
       todayTotalMoney += r;
@@ -449,14 +518,29 @@ function renderTodayBar(){
   });
 
   $("todayStatsGroup").innerHTML = `
-    ${detailStr || '<div class="stat-item">今日尚無訂餐紀錄</div>'}
+    ${detailStr || `<div class="stat-item">${ty}/${tm}/${td} 尚無訂餐紀錄</div>`}
     <div class="stat-item" style="background:#22c55e; color:#fff;">當日訂餐總計：<b>${totalMeals}</b> 人 / <b>$${todayTotalMoney}</b></div>
   `;
 }
 
+function shiftSummaryDate(deltaDays){
+  const rawVal = $("summaryDateInput").value || toDateInputValue(today);
+  const parts = rawVal.split("-").map(Number);
+  const nextD = new Date(parts[0], parts[1] - 1, parts[2] + deltaDays);
+  $("summaryDateInput").value = toDateInputValue(nextD);
+  renderTodayBar();
+}
+
+$("summaryDateInput").addEventListener("change", renderTodayBar);
+$("prevSummaryDateBtn").addEventListener("click", () => shiftSummaryDate(-1));
+$("nextSummaryDateBtn").addEventListener("click", () => shiftSummaryDate(1));
+$("resetSummaryTodayBtn").addEventListener("click", () => {
+  $("summaryDateInput").value = toDateInputValue(new Date());
+  renderTodayBar();
+});
+
 function renderQuickTagBar(){
   const bar = $("quickTagBar");
-  
   bar.innerHTML = `
     <strong style="font-size:13px; color:#1e293b; margin-right:4px;">🔍 快速查核學生：</strong>
     <input type="text" id="tagSearchInput" placeholder="搜尋姓名..." value="${esc(tagSearchKeyword)}" style="width:130px; padding:4px 8px; font-size:12px; margin-right:8px;">
@@ -469,18 +553,13 @@ function renderQuickTagBar(){
   });
 
   const cYM = currentYM();
-  const cY = Number($("year").value);
-  const cM = Number($("month").value);
 
   data.students.forEach((st, idx) => {
     const matchSearch = !tagSearchKeyword || st.name.toLowerCase().includes(tagSearchKeyword) || String(idx+1).includes(tagSearchKeyword);
     if(!matchSearch) return;
 
     const sStats = calcMonthFee(cYM, st.id);
-    const prevBalance = calcStudentBalanceUpTo(cY, cM, st.id);
-    let overPaid = prevBalance > 0 ? prevBalance : 0;
-    let underPaid = prevBalance < 0 ? Math.abs(prevBalance) : 0;
-    let finalPay = Math.max(0, sStats.total - overPaid + underPaid);
+    const finalPay = sStats.total;
     
     const payData = data.payments[`${cYM}|${st.id}`] || { paid: "" };
     const paidVal = payData.paid === "" ? 0 : Number(payData.paid);
@@ -508,7 +587,6 @@ function renderQuickTagBar(){
 function render(){
   renderTodayBar();
   renderQuickTagBar();
-  updateLayoutUI();
 
   const list = $("studentList");
   list.innerHTML = "";
@@ -534,13 +612,9 @@ function render(){
     const sStats = calcMonthFee(cYM, st.id);
     totalGrand += sStats.total;
 
-    const prevBalance = calcStudentBalanceUpTo(cY, cM, st.id);
-    let overPaid = prevBalance > 0 ? prevBalance : 0;
-    let underPaid = prevBalance < 0 ? Math.abs(prevBalance) : 0;
-    
-    let finalPay = Math.max(0, sStats.total - overPaid + underPaid);
+    const finalPay = sStats.total;
     const payKey = `${cYM}|${st.id}`;
-    const payData = data.payments[payKey] || { paid: "" };
+    const payData = data.payments[payKey] || { paid: "", note: "" };
 
     const card = document.createElement("article");
     card.className = "student selected-card";
@@ -554,8 +628,8 @@ function render(){
         <input type="text" class="name-input" value="${esc(st.name)}" placeholder="學生姓名">
         ${st.remark ? `<span style="font-size:12px; color:#d97706; background:#fef3c7; padding:2px 6px; border-radius:4px; white-space:nowrap;">🏷️ ${esc(st.remark)}</span>` : ''}
       </div>
-      <div>
-        <button class="secondary no-print single-print-btn" style="padding:4px 8px; font-size:12px;">🖨️ 列印此張</button>
+      <div style="display:flex; gap:4px;">
+        <button class="secondary no-print single-print-btn" style="padding:4px 8px; font-size:12px;">🖨️ 列印</button>
         <button class="danger no-print" style="padding:4px 8px; font-size:12px;">刪除</button>
       </div>
     `;
@@ -643,9 +717,6 @@ function render(){
     const payGroup = document.createElement("div");
     payGroup.className = "pay-input-group";
     payGroup.innerHTML = `
-      <div>前期結轉: <span style="color:${overPaid>0?'green':(underPaid>0?'red':'#333')}; font-weight:bold;">
-        ${overPaid > 0 ? `溢繳抵扣 -$${overPaid}` : (underPaid > 0 ? `補繳 +$${underPaid}` : '$0')}
-      </span></div>
       <div><strong>本月應繳：$${finalPay}</strong></div>
       <div style="margin-left:auto;">
         <label>當月已繳：$</label>
@@ -660,18 +731,22 @@ function render(){
     });
     body.appendChild(payGroup);
 
-    const remarkGroup = document.createElement("div");
-    remarkGroup.className = "remark-input-group";
-    remarkGroup.innerHTML = `
-      <label>📝 飲食/訂餐備註：</label>
-      <input type="text" class="remark-in" value="${esc(st.remark||"")}" placeholder="自訂備註（如：素食、少飯...）">
+    // 備註改為手動點擊按鈕儲存，不自動存檔
+    const remarkEditRow = document.createElement("div");
+    remarkEditRow.className = "remark-edit-row";
+    remarkEditRow.innerHTML = `
+      <label style="white-space:nowrap; color:#334155;">✏️ 備註：</label>
+      <input type="text" class="st-remark-in" value="${esc(st.remark||"")}" placeholder="輸入或修改備註（如：素食、不吃牛、少飯...）">
+      <button type="button" class="primary save-remark-btn" style="padding:4px 10px; font-size:12px; white-space:nowrap;">儲存備註</button>
     `;
-
-    remarkGroup.querySelector('.remark-in').addEventListener('change', (e) => {
-      st.remark = e.target.value.trim();
-      save(); render();
+    const remarkInputEl = remarkEditRow.querySelector('.st-remark-in');
+    const saveRemarkBtn = remarkEditRow.querySelector('.save-remark-btn');
+    saveRemarkBtn.addEventListener('click', () => {
+      st.remark = remarkInputEl.value.trim();
+      save();
+      render();
     });
-    body.appendChild(remarkGroup);
+    body.appendChild(remarkEditRow);
 
     card.appendChild(body);
     list.appendChild(card);
@@ -720,11 +795,8 @@ function renderBatchTab(){
     `;
 
     item.querySelector("input").addEventListener("change", (e) => {
-      if(e.target.checked) {
-        batchSelectedStudentIds.add(st.id);
-      } else {
-        batchSelectedStudentIds.delete(st.id);
-      }
+      if(e.target.checked) batchSelectedStudentIds.add(st.id);
+      else batchSelectedStudentIds.delete(st.id);
       $("batchSelectAllStudents").checked = batchSelectedStudentIds.size === data.students.length && data.students.length > 0;
     });
 
@@ -775,8 +847,6 @@ function renderBatchTab(){
 
 function renderReportTab(){
   const cYM = currentYM();
-  const cY = Number($("year").value);
-  const cM = Number($("month").value);
 
   let html = `
     <table style="width:100%; border-collapse:collapse; text-align:left; font-size:14px;">
@@ -789,7 +859,6 @@ function renderReportTab(){
           <th style="padding:10px; border:1px solid #e2e8f0; text-align:center;">75元天數</th>
           <th style="padding:10px; border:1px solid #e2e8f0; text-align:center;">105元天數</th>
           <th style="padding:10px; border:1px solid #e2e8f0; text-align:right;">本月餐費</th>
-          <th style="padding:10px; border:1px solid #e2e8f0; text-align:right;">前期抵扣/補繳</th>
           <th style="padding:10px; border:1px solid #e2e8f0; text-align:right;">本月應繳總額</th>
         </tr>
       </thead>
@@ -797,12 +866,11 @@ function renderReportTab(){
   `;
 
   if(data.students.length === 0){
-    html += `<tr><td colspan="9" style="padding:20px; text-align:center; color:#64748b;">無學生資料</td></tr>`;
+    html += `<tr><td colspan="8" style="padding:20px; text-align:center; color:#64748b;">無學生資料</td></tr>`;
   } else {
     data.students.forEach(st => {
       let s = calcMonthFee(cYM, st.id);
-      let prev = calcStudentBalanceUpTo(cY, cM, st.id);
-      let finalPay = Math.max(0, s.total - prev);
+      let finalPay = s.total;
       html += `
         <tr style="border-bottom:1px solid #e2e8f0;">
           <td style="padding:8px; border:1px solid #e2e8f0;"><b>${esc(st.className||"5B")}</b></td>
@@ -812,7 +880,6 @@ function renderReportTab(){
           <td style="padding:8px; border:1px solid #e2e8f0; text-align:center;">${s.counts[75]||0}</td>
           <td style="padding:8px; border:1px solid #e2e8f0; text-align:center;">${s.counts[105]||0}</td>
           <td style="padding:8px; border:1px solid #e2e8f0; text-align:right;">$${s.total}</td>
-          <td style="padding:8px; border:1px solid #e2e8f0; text-align:right;">$${prev}</td>
           <td style="padding:8px; border:1px solid #e2e8f0; text-align:right; font-weight:bold; color:#1e3a8a;">$${finalPay}</td>
         </tr>
       `;
@@ -830,8 +897,8 @@ function renderStudentRemarksList(){
         <tr style="background:#f1f5f9; border-bottom:2px solid #cbd5e1;">
           <th style="padding:8px; border:1px solid #e2e8f0; width:100px;">班級</th>
           <th style="padding:8px; border:1px solid #e2e8f0; width:180px;">姓名</th>
-          <th style="padding:8px; border:1px solid #e2e8f0;">學生飲食 / 訂餐備註</th>
-          <th style="padding:8px; border:1px solid #e2e8f0; width:80px; text-align:center;">操作</th>
+          <th style="padding:8px; border:1px solid #e2e8f0;">學生飲食 / 訂餐備註（修改後請點擊右側儲存）</th>
+          <th style="padding:8px; border:1px solid #e2e8f0; width:130px; text-align:center;">操作</th>
         </tr>
       </thead>
       <tbody>
@@ -840,19 +907,20 @@ function renderStudentRemarksList(){
   if(data.students.length === 0){
     html += `<tr><td colspan="4" style="padding:20px; text-align:center; color:#64748b;">目前尚無學生資料，請由上方新增。</td></tr>`;
   } else {
-    data.students.forEach((st, idx) => {
+    data.students.forEach((st) => {
       html += `
-        <tr>
+        <tr id="row_${st.id}">
           <td style="padding:6px; border:1px solid #e2e8f0;">
-            <input type="text" value="${esc(st.className||"5B")}" onchange="updateStudentInfo('${st.id}', 'className', this.value)" style="width:100%; padding:4px;">
+            <input type="text" class="tab4-class" value="${esc(st.className||"5B")}" style="width:100%; padding:4px;">
           </td>
           <td style="padding:6px; border:1px solid #e2e8f0;">
-            <input type="text" value="${esc(st.name)}" onchange="updateStudentInfo('${st.id}', 'name', this.value)" style="width:100%; padding:4px;">
+            <input type="text" class="tab4-name" value="${esc(st.name)}" style="width:100%; padding:4px;">
           </td>
           <td style="padding:6px; border:1px solid #e2e8f0;">
-            <input type="text" value="${esc(st.remark||"")}" placeholder="如：素食、不吃牛肉、少飯..." onchange="updateStudentInfo('${st.id}', 'remark', this.value)" style="width:100%; padding:4px;">
+            <input type="text" class="tab4-remark" value="${esc(st.remark||"")}" placeholder="如：素食、不吃牛肉、少飯..." style="width:100%; padding:4px;">
           </td>
-          <td style="padding:6px; border:1px solid #e2e8f0; text-align:center;">
+          <td style="padding:6px; border:1px solid #e2e8f0; text-align:center; white-space:nowrap;">
+            <button class="primary" onclick="saveStudentRowInTab4('${st.id}')" style="padding:4px 8px; font-size:12px; margin-right:4px;">儲存</button>
             <button class="danger" onclick="deleteStudentInTab4('${st.id}')" style="padding:4px 8px; font-size:12px;">刪除</button>
           </td>
         </tr>
@@ -864,11 +932,16 @@ function renderStudentRemarksList(){
   $("studentRemarksListContainer").innerHTML = html;
 }
 
-function updateStudentInfo(sid, key, value){
+function saveStudentRowInTab4(sid){
   let st = data.students.find(s => s.id === sid);
-  if(st){
-    st[key] = value.trim();
+  let row = document.getElementById(`row_${sid}`);
+  if(st && row){
+    st.className = row.querySelector('.tab4-class').value.trim() || "5B";
+    st.name = row.querySelector('.tab4-name').value.trim() || "未命名學生";
+    st.remark = row.querySelector('.tab4-remark').value.trim();
     save();
+    renderStudentRemarksList();
+    alert(`已儲存「${st.name}」的資料與備註！`);
   }
 }
 
@@ -898,22 +971,15 @@ $("addBatchBtnTab4").addEventListener("click", () => {
 
     if(line.includes("(") || line.includes("（")){
       let match = line.match(/^([^(（]+)[(（]([^)）]+)[)）]?/);
-      if(match){
-        name = match[1];
-        remark = match[2];
-      }
+      if(match){ name = match[1]; remark = match[2]; }
     } else if(line.includes(",")) {
-      let parts = line.split(",");
-      name = parts[0]; remark = parts.slice(1).join(",");
+      let parts = line.split(","); name = parts[0]; remark = parts.slice(1).join(",");
     } else if(line.includes("，")) {
-      let parts = line.split("，");
-      name = parts[0]; remark = parts.slice(1).join("，");
+      let parts = line.split("，"); name = parts[0]; remark = parts.slice(1).join("，");
     } else if(line.includes("/")) {
-      let parts = line.split("/");
-      name = parts[0]; remark = parts.slice(1).join("/");
+      let parts = line.split("/"); name = parts[0]; remark = parts.slice(1).join("/");
     } else if(line.includes("：") || line.includes(":")) {
-      let parts = line.split(/[:：]/);
-      name = parts[0]; remark = parts.slice(1).join(":");
+      let parts = line.split(/[:：]/); name = parts[0]; remark = parts.slice(1).join(":");
     }
 
     name = name.trim();
@@ -935,11 +1001,8 @@ $("addBatchBtnTab4").addEventListener("click", () => {
 });
 
 $("batchSelectAllStudents").addEventListener("change", (e) => {
-  if(e.target.checked) {
-    data.students.forEach(s => batchSelectedStudentIds.add(s.id));
-  } else {
-    batchSelectedStudentIds.clear();
-  }
+  if(e.target.checked) data.students.forEach(s => batchSelectedStudentIds.add(s.id));
+  else batchSelectedStudentIds.clear();
   renderBatchTab();
 });
 
@@ -951,9 +1014,7 @@ $("btnSelectWeekdays").addEventListener("click", () => {
 
   for(let d=1; d<=totalDays; d++){
     const dayOfWeek = new Date(cY, cM - 1, d).getDay();
-    if(dayOfWeek >= 1 && dayOfWeek <= 5){
-      batchSelectedDates.add(d);
-    }
+    if(dayOfWeek >= 1 && dayOfWeek <= 5) batchSelectedDates.add(d);
   }
   renderBatchTab();
 });
@@ -973,9 +1034,7 @@ $("btnClearDays").addEventListener("click", () => {
 function getSelectedBatchRate(){
   const checkedRadio = document.querySelector('input[name="batchRate"]:checked');
   if(!checkedRadio) return 70;
-  if(checkedRadio.value === "custom"){
-    return Number($("customRateVal").value) || 0;
-  }
+  if(checkedRadio.value === "custom") return Number($("customRateVal").value) || 0;
   return Number(checkedRadio.value);
 }
 
@@ -987,11 +1046,8 @@ $("btnBatchOrder").addEventListener("click", () => {
   if(!targetRate){ alert("請輸入有效的訂餐餐標金額！"); return; }
 
   const cYM = currentYM();
-
   batchSelectedStudentIds.forEach(sid => {
-    batchSelectedDates.forEach(d => {
-      setRate(cYM, sid, d, targetRate);
-    });
+    batchSelectedDates.forEach(d => setRate(cYM, sid, d, targetRate));
   });
 
   save();
@@ -1007,9 +1063,7 @@ $("btnBatchCancel").addEventListener("click", () => {
 
   const cYM = currentYM();
   batchSelectedStudentIds.forEach(sid => {
-    batchSelectedDates.forEach(d => {
-      setRate(cYM, sid, d, 0);
-    });
+    batchSelectedDates.forEach(d => setRate(cYM, sid, d, 0));
   });
 
   save();
@@ -1032,16 +1086,14 @@ $("applyMonth").addEventListener("click", () => {
 
 $("exportBtn").addEventListener("click", () => {
   let cYM = currentYM();
-  let cY = Number($("year").value), cM = Number($("month").value);
-  let rows = [["月份","班級","學生姓名","學生備註","70元天數","75元天數","105元天數","餐費小計","歷史溢繳/補繳","本月應繳金額","本月已繳金額"]];
+  let rows = [["月份","班級","學生姓名","學生備註","70元天數","75元天數","105元天數","餐費小計","本月應繳金額","本月已繳金額"]];
   
   data.students.forEach(st => {
     if(!selectedStudentIds.has(st.id)) return;
     let s = calcMonthFee(cYM, st.id);
-    let prev = calcStudentBalanceUpTo(cY, cM, st.id);
-    let finalPay = Math.max(0, s.total - prev);
+    let finalPay = s.total;
     let paid = (data.payments[`${cYM}|${st.id}`] || {}).paid || 0;
-    rows.push([cYM, st.className||"5B", st.name, st.remark||"", s.counts[70]||0, s.counts[75]||0, s.counts[105]||0, s.total, prev, finalPay, paid]);
+    rows.push([cYM, st.className||"5B", st.name, st.remark||"", s.counts[70]||0, s.counts[75]||0, s.counts[105]||0, s.total, finalPay, paid]);
   });
 
   let csv = "\uFEFF" + rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(",")).join("\r\n");
@@ -1073,13 +1125,16 @@ $("loadCloudBtn").addEventListener("click", async () => {
   } catch(err) { alert("載入失敗：" + err.message); }
 });
 
+// =========================================================================
+// 直式 A4 精確 10 位 (2×5) 列印繳費單邏輯（手機+電腦雙相容、字體加大加深版）
+// =========================================================================
 $("printBatchBtn").addEventListener("click", () => {
   const targetIds = Array.from(selectedStudentIds);
   if(targetIds.length === 0){ alert("請先勾選至少一位學生！"); return; }
   printSlips(targetIds);
 });
 
-function printSlips(studentIds){
+function buildPrintPagesHtml(studentIds){
   const cY = Number($("year").value);
   const cM = Number($("month").value);
   const cYM = getYM(cY, cM);
@@ -1087,7 +1142,6 @@ function printSlips(studentIds){
   const firstDay = new Date(cY, cM - 1, 1);
   const offset = (firstDay.getDay() + 6) % 7;
 
-  let printWindow = window.open('', '_blank');
   let pagesHtml = '';
   
   for (let i = 0; i < studentIds.length; i += 10) {
@@ -1099,16 +1153,9 @@ function printSlips(studentIds){
       if(!st) return;
 
       let sStats = calcMonthFee(cYM, sid);
-      let prevBal = calcStudentBalanceUpTo(cY, cM, sid);
-      let overPaid = prevBal > 0 ? prevBal : 0;
-      let underPaid = prevBal < 0 ? Math.abs(prevBal) : 0;
-      let finalTotal = Math.max(0, sStats.total - overPaid + underPaid);
+      let finalTotal = sStats.total;
 
-      let balText = "$0";
-      if(overPaid > 0) balText = `溢繳抵扣 -$${overPaid}`;
-      else if(underPaid > 0) balText = `補繳 +$${underPaid}`;
-
-      let stRemarkHtml = st.remark ? `<div class="slip-row note" style="color:#2563eb;">備註: ${esc(st.remark)}</div>` : '';
+      let stRemarkHtml = st.remark ? `<div class="slip-row note">備註: ${esc(st.remark)}</div>` : '';
 
       let calCellsHtml = '';
       ["一","二","三","四","五","六","日"].forEach(w => { calCellsHtml += `<div class="p-whead">${w}</div>`; });
@@ -1137,14 +1184,13 @@ function printSlips(studentIds){
       slipsHtml += `
         <div class="slip">
           <div class="slip-left">
-            <div class="slip-row name">姓名：<b>${esc(st.className||"5B")} ${esc(st.name)}</b></div>
+            <div class="slip-row name"><b>${esc(st.className||"5B")} ${esc(st.name)}</b></div>
             <div class="slip-row title">${cM}月餐費明細</div>
-            <div class="slip-row">70元 × <b>${sStats.counts[70]||0}</b>天 ($${(sStats.counts[70]||0)*70})</div>
-            <div class="slip-row">75元 × <b>${sStats.counts[75]||0}</b>天 ($${(sStats.counts[75]||0)*75})</div>
-            <div class="slip-row">105元 × <b>${sStats.counts[105]||0}</b>天 ($${(sStats.counts[105]||0)*105})</div>
-            <div class="slip-row">前期結轉：<b>${balText}</b></div>
+            <div class="slip-row">70元×<b>${sStats.counts[70]||0}</b>天 ($${(sStats.counts[70]||0)*70})</div>
+            <div class="slip-row">75元×<b>${sStats.counts[75]||0}</b>天 ($${(sStats.counts[75]||0)*75})</div>
+            <div class="slip-row">105元×<b>${sStats.counts[105]||0}</b>天 ($${(sStats.counts[105]||0)*105})</div>
             ${stRemarkHtml}
-            <div class="slip-row total">應繳金額：<b>$${finalTotal}</b></div>
+            <div class="slip-row total">應繳：<b>$${finalTotal}</b></div>
           </div>
           <div class="slip-right">
             <div class="p-calendar">${calCellsHtml}</div>
@@ -1155,57 +1201,78 @@ function printSlips(studentIds){
 
     pagesHtml += `<div class="page-grid">${slipsHtml}</div>`;
   }
+  return pagesHtml;
+}
+
+function printSlips(studentIds){
+  const pagesHtml = buildPrintPagesHtml(studentIds);
+  $("mobileFallbackPrintArea").innerHTML = pagesHtml;
 
   const fullContent = `
   <!DOCTYPE html>
-  <html>
+  <html lang="zh-Hant">
   <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>餐費繳費單列印</title>
   <style>
-    @page { size: A4 portrait; margin: 6mm 8mm; }
-    *{ box-sizing: border-box; margin: 0; padding: 0; font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
-    body { background: #fff; color: #000; }
+    @page { size: A4 portrait; margin: 5mm 7mm; }
+    *{ 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body { background: #fff; color: #000; width: 100%; }
     
+    /* 強制維持兩欄五列 (一面10張)，避免手機瀏覽器縮成單欄 */
     .page-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(5, 53mm);
-      gap: 3mm 4mm;
-      width: 100%;
-      height: 275mm;
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      grid-template-rows: repeat(5, 53.5mm) !important;
+      gap: 2.5mm 3.5mm !important;
+      width: 100% !important;
+      min-width: 190mm;
+      height: 278mm !important;
       page-break-after: always;
       overflow: hidden;
     }
+    @media print {
+      .page-grid { min-width: 100% !important; }
+    }
     .slip {
-      border: 1px dashed #444;
+      border: 1.3px dashed #000;
       border-radius: 4px;
-      padding: 4px 6px;
+      padding: 3px 4px;
       display: flex;
-      gap: 6px;
-      height: 53mm;
+      gap: 4px;
+      height: 53.5mm;
       overflow: hidden;
       background: #fff;
+      color: #000;
     }
     .slip-left {
-      width: 44%;
+      width: 35%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-right: 1px solid #ccc;
-      padding-right: 4px;
-      font-size: 9.5px;
-      line-height: 1.2;
+      border-right: 1px solid #000;
+      padding-right: 3px;
+      font-size: 9px;
+      line-height: 1.15;
+      color: #000;
     }
-    .slip-row.name { font-size: 11px; font-weight: bold; border-bottom: 1px solid #000; padding-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .slip-row.title { font-size: 10.5px; font-weight: bold; color: #333; }
-    .slip-row.note { color: #d97706; font-size: 8px; word-break: break-all; font-weight: bold; }
+    .slip-row.name { font-size: 10.5px; font-weight: 900; border-bottom: 1.5px solid #000; padding-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #000; }
+    .slip-row.title { font-size: 9.5px; font-weight: 900; color: #000; }
+    .slip-row.note { color: #000; font-weight: 800; font-size: 7.5px; word-break: break-all; }
     
     .slip-row.total { 
-      font-size: 11px; 
-      font-weight: bold; 
+      font-size: 10px; 
+      font-weight: 900; 
       background: #f1f5f9; 
-      padding: 2px 4px; 
+      padding: 2px 3px; 
       border-radius: 3px; 
       border: 1.5px solid #000; 
       color: #000;
@@ -1213,44 +1280,65 @@ function printSlips(studentIds){
       justify-content: space-between;
       align-items: center;
     }
-    .slip-row.total b { font-size: 12px; color: #000; }
+    .slip-row.total b { font-size: 11.5px; font-weight: 900; color: #000; }
 
-    .slip-right { width: 56%; display: flex; align-items: center; justify-content: center; }
+    /* 右側日曆區塊加大佔比，讓日期與金額更清晰 */
+    .slip-right { width: 65%; display: flex; align-items: center; justify-content: center; }
     .p-calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; width: 100%; text-align: center; }
-    .p-whead { font-size: 8px; font-weight: bold; color: #333; margin-bottom: 1px; }
+    .p-whead { font-size: 10px; font-weight: 900; color: #000; margin-bottom: 0.5px; }
     
     .p-day { 
-      height: 15.5px; 
+      height: 21.5px; 
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-radius: 1px;
+      border-radius: 2px;
       line-height: 1;
     }
     .p-empty { background: transparent; }
     .p-norate { border: none; background: transparent; }
     
     .p-ordered { 
-      print-color-adjust: exact;
-      border: 1px solid #000; 
+      border: 1.5px solid #000; 
       background: #fff; 
       color: #000; 
     }
-    .p-dnum { font-size: 7.5px; font-weight: bold; line-height: 1; }
-    .p-dfee { font-size: 6px; line-height: 1; transform: scale(0.9); }
+    /* 再放大且加深日期數字與 75/105 金額 */
+    .p-dnum { 
+      font-size: 12.5px; 
+      font-weight: 900; 
+      color: #000; 
+      line-height: 1; 
+    }
+    .p-dfee { 
+      font-size: 10px; 
+      font-weight: 900; 
+      color: #000; 
+      line-height: 1; 
+      margin-top: 0.5px;
+    }
   </style>
   </head>
   <body>
     ${pagesHtml}
-    <script>window.onload = function() { window.print(); };<\/script>
+    <script>
+      window.onload = function() {
+        setTimeout(function() { window.print(); }, 250);
+      };
+    <\/script>
   </body>
   </html>
   `;
 
-  printWindow.document.open();
-  printWindow.document.write(fullContent);
-  printWindow.document.close();
+  let printWindow = window.open('', '_blank');
+  if (printWindow) {
+    printWindow.document.open();
+    printWindow.document.write(fullContent);
+    printWindow.document.close();
+  } else {
+    window.print();
+  }
 }
 
 render();
